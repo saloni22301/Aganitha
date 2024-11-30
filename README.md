@@ -22,3 +22,36 @@ Taylor's Kitchen Assistant is a web application that helps users find and displa
 1. Clone the repository:
    ```bash
    git clone https://github.com/saloni22301/Aganitha.git
+
+2. Navigate to the project directory 
+   cd taylors-kitchen-assistantcd
+3. Install dependencies
+   npm install -i
+4. Start the development server 
+   npm start
+   ## File Structure
+.
+├── public
+│   ├── index.html
+│   └── ...
+├── src
+│   ├── components
+│   │   ├── RecipeCard.js
+│   │   └── ...
+│   ├── App.css
+│   ├── App.js
+│   ├── index.js
+│   └── ...
+├── package.json
+└── README.md
+
+To customize the application, you can modify the following files:
+
+src/App.css: Update the CSS styles for different elements.
+
+src/App.js: Modify the main component structure and behavior.
+
+src/components/RecipeCard.js: Update the recipe card component.
+
+
+
