@@ -228,26 +228,61 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const inputRef = useRef(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // const fetchRecipes = async (ingredient) => {
+  //   if (ingredient === '') {
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
+  //   const data = await response.json();
+  //   const fetchedRecipes = data.meals.map(recipe => ({
+  //     ...recipe,
+  //     preparationTime: Math.floor(Math.random() * 60) + 10 // Random time between 10 and 60 minutes
+  //   }));
+
+  //   // Sort the recipes by preparation time
+  //   const sortedRecipes = fetchedRecipes.sort((a, b) => a.preparationTime - b.preparationTime);
+
+  //   setRecipes(sortedRecipes);
+  //   setLoading(false);
+  //   setIngredient(''); // Clear input box after fetching recipes
+  // };
 
   const fetchRecipes = async (ingredient) => {
     if (ingredient === '') {
       return;
     }
     setLoading(true);
-    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
-    const data = await response.json();
-    const fetchedRecipes = data.meals.map(recipe => ({
-      ...recipe,
-      preparationTime: Math.floor(Math.random() * 60) + 10 // Random time between 10 and 60 minutes
-    }));
+    try {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
+      const data = await response.json();
+      if (data.meals) {
+        const fetchedRecipes = data.meals.map(recipe => ({
+          ...recipe,
+          preparationTime: Math.floor(Math.random() * 60) + 10 // Random time between 10 and 60 minutes
+        }));
+        const sortedRecipes = fetchedRecipes.sort((a, b) => a.preparationTime - b.preparationTime);
 
-    // Sort the recipes by preparation time
-    const sortedRecipes = fetchedRecipes.sort((a, b) => a.preparationTime - b.preparationTime);
-
-    setRecipes(sortedRecipes);
-    setLoading(false);
-    setIngredient(''); // Clear input box after fetching recipes
+      setRecipes(sortedRecipes);
+      setLoading(false);
+      setIngredient('');
+        //setRecipes(fetchedRecipes);
+        setErrorMessage('');
+      } else {
+        setRecipes([]);
+        setErrorMessage('No recipes found. Please try a different ingredient.');
+        setIngredient(''); 
+      }
+    } catch (error) {
+      setRecipes([]);
+      setErrorMessage('An error occurred while fetching recipes. Please try again later.'); // Set error message for API errors
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   const fetchSuggestions = async (query) => {
     if (query.length < 1) {
@@ -327,6 +362,7 @@ function App() {
           <button onClick={handleSearchClick} className="button">Search Recipes</button>
         </div>
       </div>
+      {errorMessage && <h2 className="error-message">{errorMessage}</h2>}
       {loading ? <p>Loading...</p> : <RecipeList recipes={recipes} />}
     </div>
   );
