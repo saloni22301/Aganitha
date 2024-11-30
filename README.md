@@ -25,9 +25,10 @@ Taylor's Kitchen Assistant is a web application that helps users find and displa
 
 2. Navigate to the project directory 
    cd taylors-kitchen-assistantcd
-3. Install dependencies
+   cd src
+4. Install dependencies
    npm install -i
-4. Start the development server 
+5. Start the development server 
    npm start
    ## File Structure
 .
